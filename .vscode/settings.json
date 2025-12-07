@@ -1,0 +1,13 @@
+{
+  "rubyLsp.features.testRunner": "rspec",
+
+  // Disable gutter test decorations (this removes lefthand green icons)
+
+  "testing.gutterEnabled": false,
+  "editor.codeLens": true,
+  "testing.automaticallyDetectTestSuites": "off",
+  "testing.autoRun.mode": "off",
+  "extensions.ignoreRecommendations": true,
+  "workbench.experimental.testDiscover": false,
+  "ruby.test.enabled": false
+}
