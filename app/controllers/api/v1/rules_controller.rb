@@ -1,4 +1,4 @@
-class RulesController < ApplicationController
+class Api::V1::RulesController < Api::V1Controller
   def index
     render json: Rule.all
   end
@@ -7,7 +7,9 @@ class RulesController < ApplicationController
     rule = Rule.new(rule_params)
 
     if rule.save
-      render json: rule, status: :created, location: rule
+      render json: rule,
+             status: :created,
+             location: api_v1_rule_url(rule)
     else
       render json: rule.errors.full_messages, status: :unprocessable_entity
     end
