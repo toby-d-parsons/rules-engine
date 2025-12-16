@@ -6,9 +6,14 @@ describe "Rules API", type: :request do
       get "/rules"
       expect(response).to have_http_status(:ok)
     end
-    it "bloop bloop" do
-      get "/rules"
-      expect(response).to have_http_status(:ok)
+  end
+
+  describe "POST /rules" do
+    let(:rule_params) { attributes_for(:rule) }
+
+    it "creates a new rule when valid parameters are provided" do
+      expect { post "/rules", params: { rule: rule_params } }.to change(Rule, :count).by(+1)
+      expect(response).to have_http_status :created
     end
   end
 end
