@@ -11,7 +11,10 @@ class Api::V1::RulesController < Api::V1Controller
              status: :created,
              location: api_v1_rule_url(rule)
     else
-      render json: rule.errors.full_messages, status: :unprocessable_entity
+      problem = ProblemTypes::VALIDATION_ERROR
+
+      render json: ::ValidationErrorFormatter.call(rule.errors, problem),
+             status: problem[:status]
     end
   end
 

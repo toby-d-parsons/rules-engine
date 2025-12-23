@@ -28,14 +28,16 @@ describe "Rules API", type: :request do
       expect(json["updated_at"]).to be_present
     end
 
-    it "returns errors when duplicate name is provided" do
+    it "returns a validation error response when duplicate name is provided" do
       post "/api/v1/rules", params: { rule: rule_params }
       post "/api/v1/rules", params: { rule: rule_params }
 
       expect(response).to have_http_status(:unprocessable_entity)
 
       json = JSON.parse(response.body)
-      expect(json).to include("Name has already been taken")
+
+      expect(json["type"]).to eq("https://example.com/problems/validation-error")
+      expect(json["validation"]).to be_an(Array)
     end
   end
 end
