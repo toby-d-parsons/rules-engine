@@ -27,5 +27,15 @@ describe "Rules API", type: :request do
       expect(json["created_at"]).to be_present
       expect(json["updated_at"]).to be_present
     end
+
+    it "returns errors when duplicate name is provided" do
+      post "/api/v1/rules", params: { rule: rule_params }
+      post "/api/v1/rules", params: { rule: rule_params }
+
+      expect(response).to have_http_status(:unprocessable_entity)
+
+      json = JSON.parse(response.body)
+      expect(json).to include("Name has already been taken")
+    end
   end
 end
