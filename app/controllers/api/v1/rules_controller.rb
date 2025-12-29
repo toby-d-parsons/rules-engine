@@ -5,6 +5,7 @@ class Api::V1::RulesController < Api::V1Controller
 
   def create
     rule = Rule.new(rule_params)
+    rule.unparsed_value = params[:rule][:value]
 
     if rule.save
       render json: rule,
