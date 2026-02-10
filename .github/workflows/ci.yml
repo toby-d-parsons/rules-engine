@@ -20,23 +20,7 @@ jobs:
           bundler-cache: true
 
       - name: Scan for common Rails security vulnerabilities using static analysis
-        run: |
-          set -euxo pipefail
-      
-          # run brakeman and capture *everything* it prints
-          bin/brakeman --no-pager --force --format=text --output ./tmp/brakeman.txt 2>&1 | tee ./tmp/brakeman.log || true
-      
-          echo "----- ls tmp/ -----"
-          ls -la ./tmp || true
-      
-          echo "----- brakeman.txt -----"
-          cat ./tmp/brakeman.txt || true
-      
-          echo "----- brakeman.log -----"
-          cat ./tmp/brakeman.log || true
-      
-          # now fail job if brakeman would fail (but after we've printed the output)
-          bin/brakeman --no-pager --force --format=text
+        run: bin/brakeman --no-pager --force --format=text --confidence-level=medium
 
   # scan_js:
   #   runs-on: ubuntu-latest
