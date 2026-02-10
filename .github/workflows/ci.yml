@@ -20,7 +20,7 @@ jobs:
           bundler-cache: true
 
       - name: Brakeman security scan
-        run: bin/brakeman --no-pager --force --format=text --skip-checks EOLRuby
+        run: bin/brakeman --no-pager --force --format=text --ignore-config config/brakeman.ignore
 
   # scan_js:
   #   runs-on: ubuntu-latest
