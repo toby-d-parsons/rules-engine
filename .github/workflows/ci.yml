@@ -20,7 +20,29 @@ jobs:
           bundler-cache: true
 
       - name: Scan for common Rails security vulnerabilities using static analysis
-        run: bin/brakeman --no-pager --format=text
+        run: |
+          set -euxo pipefail
+      
+          echo "PWD: $(pwd)"
+          ls -la
+      
+          echo "Ruby: $(ruby -v)"
+          echo "Bundler: $(bundle -v)"
+          echo "Brakeman: $(bin/brakeman -v)"
+      
+          # Prove Rails app structure exists where Brakeman expects it
+          test -f config/application.rb && echo "Found config/application.rb"
+          test -f Gemfile && echo "Found Gemfile"
+          test -d app && echo "Found app/"
+      
+          # Force scan + write report, then print it
+          bin/brakeman --no-pager --force --format=text -o brakeman.txt || true
+          echo "----- Brakeman report -----"
+          cat brakeman.txt || true
+          echo "---------------------------"
+      
+          # Preserve CI failure semantics if you want the job to fail on warnings
+          bin/brakeman --no-pager --force --format=text
 
   # scan_js:
   #   runs-on: ubuntu-latest
